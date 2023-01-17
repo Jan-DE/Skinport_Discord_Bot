@@ -55,7 +55,7 @@ class DiscordBot {
 			stickerCount[sticker.name] = count ? count + 1 : 1;
 		});
 		
-		const sortedStickerCount = Object.entries(stickerCount).sort((a, b) => b[1] - a[1]); //stickerArrArr
+		const sortedStickerCount = Object.entries(stickerCount).sort((a, b) => b[1] - a[1]);
 		
 		sortedStickerCount.forEach(([key, value]) => {
 			if (value > 1) {
@@ -96,8 +96,8 @@ class DiscordBot {
 			if (offer.wear) { //Gun, Knife or Gloves
 				embedMsg.addFields([
 					{name: 'Float',  value: offer.wear.toFixed(8).toString(), inline: true},
-					{name: 'Pattern',  value: offer.pattern.toString(), inline: true},
-					{name: 'Finish',  value: offer.finish.toString(), inline: true}
+					{name: 'Pattern',  value: offer.pattern ? offer.pattern.toString() : '-', inline: true},
+					{name: 'Finish',  value: offer.finish ? offer.finish.toString() : '-', inline: true}
 				]);
 			}
 			
