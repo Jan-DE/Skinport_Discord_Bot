@@ -44,29 +44,28 @@ class DiscordBot {
 	formatStickers(stickers) {
 		if (stickers.length == 1) {
 			return stickers[0].name;
-		} else {
-			const sb = new StringBuilder();
-			
-			const stickerMap = {};
-			
-			stickers.forEach(sticker => {
-				const val = stickerMap[sticker.name];
-				stickerMap[sticker.name] = val ? val + 1 : 1;
-			});
-			
-			const sortedStickerMap = Object.entries(stickerMap).sort((a, b) => b[1] - a[1]);
-			
-			sortedStickerMap.forEach(([key, value]) => {
-				if (value > 1) {
-					sb.append(value + 'x ');
-				}
-				
-				sb.append(key);
-				sb.append('\n');
-			});
-			
-			return sb.toString();
 		}
+
+		let str = '';
+		
+		const stickerCount = {};
+		
+		stickers.forEach(sticker => {
+			const count = stickerCount[sticker.name];
+			stickerCount[sticker.name] = count ? count + 1 : 1;
+		});
+		
+		const sortedStickerCount = Object.entries(stickerCount).sort((a, b) => b[1] - a[1]); //stickerArrArr
+		
+		sortedStickerCount.forEach(([key, value]) => {
+			if (value > 1) {
+				str += value + 'x ';
+			}
+			
+			str += key + '\n';
+		});
+		
+		return str;
 	}
 	
 	handleListings(listings) {
@@ -74,7 +73,7 @@ class DiscordBot {
 			const price = offer.salePrice / 100.0;
 			const sugPrice = offer.suggestedPrice / 100.0;
 			
-			if (sugPrice < 10) return;
+			if (price < 10) return;
 			
 			//console.log(offer);
 			
