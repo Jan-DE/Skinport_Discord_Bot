@@ -1,6 +1,5 @@
 const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const StringBuilder = require('string-builder');
 const numberFormatter = new Intl.NumberFormat('en-US');
 const MessageBundler = require('./MessageBundler');
 
