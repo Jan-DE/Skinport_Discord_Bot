@@ -1,6 +1,6 @@
 const fs = require('fs');
 const DiscordBot = require('./DiscordBot');
-const { io } = require("socket.io-client");
+const { io } = require("socket.io-client"); //https://socket.io/docs/v4/client-api/
 
 //Read bot token from "discord_token" file
 let discordToken;
@@ -29,7 +29,7 @@ socket.on('connect', () => {
 
 //Add a disconnect listener
 socket.on("disconnect", (reason) => {
-	console.log('Disconnected from Skinport (Reason: ${reason}).');
+	console.log(`Disconnected from Skinport (Reason: ${reason}).`);
 
 	if (reason === "io server disconnect") { //disconnect was initiated by the server
 	  socket.connect(); //reconnect manually
@@ -38,13 +38,13 @@ socket.on("disconnect", (reason) => {
 
 //Add a reconnect listener
 socket.on("reconnect", (attempt) => {
-	console.log('Reconnected to Skinport after ${attempt} attempt(s).');
+	console.log(`Reconnected to Skinport after ${attempt} attempt(s).`);
 	joinSaleFeed();
 });
 
 //Add a reconnect_attempt listener
 socket.on("reconnect_attempt", (attempt) => {
-	console.log('Attempting to reconnect to Skinport (Attempt: ${attempt}).');
+	console.log(`Attempting to reconnect to Skinport (Attempt: ${attempt}).`);
 });
 
 //Join Sale Feed
@@ -59,7 +59,7 @@ socket.on('saleFeed', (res) => {
 	if (res.eventType === 'listed') {
 		bot.handleListings(res.sales);
 	} else { //this should never happen
-		console.log('Unhandled eventType: ' + res.eventType)
+		console.log(`Unhandled eventType: ${res.eventType}`);
 	}
   } catch (error) {
 	  console.log(error);
