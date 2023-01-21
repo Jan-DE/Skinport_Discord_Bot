@@ -11,7 +11,7 @@ class MessageBundler {
 	}
 	
 	sendCollection() {
-		if (this.embeds.length == 0) return;
+		if (this.embeds.length === 0) return;
 		
 		const collection = this.embeds.splice(0, Math.min(MAX_EMBEDS, this.embeds.length));
 		
@@ -32,7 +32,7 @@ class MessageBundler {
 	collect(embed) {
 		this.embeds.push(embed);
 		
-		if (this.embeds.length == MAX_EMBEDS) {
+		if (this.embeds.length === MAX_EMBEDS) {
 			this.reset();
 			this.sendCollection();
 		}

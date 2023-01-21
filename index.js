@@ -11,36 +11,57 @@ try {
 	process.exit(-1);
 }
 
+//Start Discordbot
 const bot = new DiscordBot(discordToken);
 bot.start();
 
+//Initialize ws client
 const socket = io('https://skinport.com', {
   transports: ['websocket'],
 });
 
-// Add a connect listener
-socket.on('connect', function (socket) {
+//Add a connect listener
+socket.on('connect', () => {
     console.log('Connected to Skinport.');
+	
 	joinSaleFeed();
 });
+
+//Add a disconnect listener
+socket.on("disconnect", (reason) => {
+	console.log('Disconnected from Skinport (Reason: ${reason}).');
+
+	if (reason === "io server disconnect") { //disconnect was initiated by the server
+	  socket.connect(); //reconnect manually
+	} //otherwise the socket will automatically reconnect
+  });
+
+//Add a reconnect listener
+socket.on("reconnect", (attempt) => {
+	console.log('Reconnected to Skinport after ${attempt} attempt(s).');
+	joinSaleFeed();
+});
+
+//Add a reconnect_attempt listener
+socket.on("reconnect_attempt", (attempt) => {
+	console.log('Attempting to reconnect to Skinport (Attempt: ${attempt}).');
+});
+
+//Join Sale Feed
+function joinSaleFeed() {
+	console.log('Joining sale feed...');
+	socket.emit('saleFeedJoin', {currency: 'USD', locale: 'en', appid: 730});
+}
 
 // Listen to the Sale Feed
 socket.on('saleFeed', (res) => {
   try {
-	switch (res.eventType) {
-		case 'listed':
-			bot.handleListings(res.sales);
-			break;
-		default:
-			console.log('UNHANDLED: ' + res.eventType)
-			break;
+	if (res.eventType === 'listed') {
+		bot.handleListings(res.sales);
+	} else { //this should never happen
+		console.log('Unhandled eventType: ' + res.eventType)
 	}
   } catch (error) {
 	  console.log(error);
   }
 });
-
-function joinSaleFeed() {
-	console.log('Joining sale feed...')
-	socket.emit('saleFeedJoin', {currency: 'USD', locale: 'en', appid: 730})
-}

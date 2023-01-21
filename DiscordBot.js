@@ -41,7 +41,7 @@ class DiscordBot {
 	}
 	
 	formatStickers(stickers) {
-		if (stickers.length == 1) {
+		if (stickers.length === 1) {
 			return stickers[0].name;
 		}
 
@@ -100,7 +100,7 @@ class DiscordBot {
 				]);
 			}
 			
-			if (offer.stickers.length != 0) {
+			if (offer.stickers.length !== 0) {
 				embedMsg.addFields([{name: 'Stickers', value: this.formatStickers(offer.stickers), inline: false}]);
 			}
 				
