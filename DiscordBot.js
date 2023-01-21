@@ -11,7 +11,7 @@ class DiscordBot {
 	}
 	
 	log(message) {
-		console.log('[Discord-Bot] ' + message);
+		console.log(`[Discord-Bot] ${message}`);
 	}
 	
 	start() {
@@ -25,7 +25,7 @@ class DiscordBot {
 		});
 
 		client.on('error', error => {
-			this.log('Error: ' + error.code);
+			this.log(`Error: ${error}`);
 		});
 
 		client.on('disconnect', message => {
@@ -56,12 +56,12 @@ class DiscordBot {
 		
 		const sortedStickerCount = Object.entries(stickerCount).sort((a, b) => b[1] - a[1]);
 		
-		sortedStickerCount.forEach(([key, value]) => {
-			if (value > 1) {
-				str += value + 'x ';
+		sortedStickerCount.forEach(([sticker, count]) => {
+			if (count > 1) {
+				str += `${count}x `;
 			}
 			
-			str += key + '\n';
+			str += sticker + '\n';
 		});
 		
 		return str;
@@ -80,15 +80,15 @@ class DiscordBot {
 			
 			const embedMsg = new EmbedBuilder()
 				.setTitle(offer.marketName)
-				.setDescription('Listed for ***$' + numberFormatter.format(price) + '***')
-				.setURL('https://skinport.com/item/' + offer.url + '/' + offer.saleId)
-				.setThumbnail('https://community.cloudflare.steamstatic.com/economy/image/' + offer.image)
-				.setImage('https://s.skinport.com/' + offer.assetId + '.jpg')
+				.setDescription(`Listed for ***$${numberFormatter.format(price)}***`)
+				.setURL(`https://skinport.com/item/${offer.url}/${offer.saleId}`)
+				.setThumbnail(`https://community.cloudflare.steamstatic.com/economy/image/${offer.image}`)
+				.setImage(`https://s.skinport.com/${offer.assetId}.jpg`)
 				.setColor(offer.rarityColor)
 				.addFields([
-					{name: 'Suggested Price',  value: '$' + numberFormatter.format(sugPrice), inline: true},
-					{name: discounted ? 'Discount' : 'Premium',  value: '*≈' + Math.round(discounted ? (1 - (price / sugPrice)) * 100 : ((price / sugPrice) - 1) * 100) + '%*', inline: true},
-					{name: 'Tradeable',  value: offer.lock ? '<t:' + (Date.parse(offer.lock) / 1000) + ':R>' : '✓', inline: true}
+					{name: 'Suggested Price',  value: `$${numberFormatter.format(sugPrice)}`, inline: true},
+					{name: discounted ? 'Discount' : 'Premium',  value: `*≈${Math.round(discounted ? (1 - (price / sugPrice)) * 100 : ((price / sugPrice) - 1) * 100)}%*`, inline: true},
+					{name: 'Tradeable',  value: offer.lock ? `<t:${Date.parse(offer.lock) / 1000}:R>` : '✓', inline: true}
 				])
 				.setTimestamp();
 				
