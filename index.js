@@ -50,7 +50,7 @@ socket.on("reconnect_attempt", (attempt) => {
 //Join Sale Feed
 function joinSaleFeed() {
 	console.log('Joining sale feed...');
-	socket.emit('saleFeedJoin', {currency: 'USD', locale: 'en', appid: 730});
+	socket.emit('saleFeedJoin', {currency: 'USD', locale: 'en', appid: 730}); //730 = CSGO's App ID on Steam
 }
 
 // Listen to the Sale Feed
